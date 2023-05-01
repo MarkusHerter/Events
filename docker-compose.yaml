@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: my_php_apache_container
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html
+    restart: always
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+      - environment=dev
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "4000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWD}
+    volumes:
+      - mysql-data:/var/lib/mysql-events
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
