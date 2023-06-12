@@ -118,9 +118,10 @@ class User
     }
     public static function newPassword($email, $passwd){
         $mysqli = Db::connect();
+        $passHash = password_hash($passwd, PASSWORD_DEFAULT,['cost' => 12]);
         $sql = "UPDATE user SET passwd=? WHERE email=?";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("ss", $passwd, $email);
+        $stmt->bind_param("ss", $passHash, $email);
         $stmt->execute();
     }
     public static function emailExists($email):bool

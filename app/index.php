@@ -12,7 +12,7 @@ spl_autoload_register(function ($className) {include 'Classes/' . $className . '
 if (new_DB){
     Db::createDb();
 }
-header("Access-Control-Allow-Origin: *"); // Ersetzen Sie "*" durch die Domain Ihres Frontends, wenn Sie nur diese Domain zulassen möchten
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, X-Requested-With");
 
@@ -69,7 +69,6 @@ switch ($action) {
             $_SESSION['id']=$id;
             $_SESSION['name']=User::getNameById($id);
             einladung();
-            die('ddg');
             if (!Group::loadGroupsByUserId($_SESSION['id'])){
                 $glow = true;
                 $view ='myaccount';
